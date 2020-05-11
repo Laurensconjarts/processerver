@@ -18,8 +18,11 @@ api_con()
 
 mac = input("mac")
 appa = input("appa")
+signaal = input("signaal")
+node = input("node")
 
 def apparaat_insert():
+    global idn
     try:
         querie = "select max(ApparaatID) from Apparaat"
         cursor.execute(querie)
@@ -34,6 +37,13 @@ def apparaat_insert():
         querie2 = f"select ApparaatID from Apparaat where MACADRES ='{mac}'"
         cursor.execute(querie2)
         result = cursor.fetchone()
-        mac1 = result[0]
-        print(mac1)
+        idn = result[0]
+        print(idn)
+def Signaal_insert():
+        querie4 = f"INSERT INTO Signaal(Datum, ApparaatID, Signaalsterkte,Node) VALUES (GETDATE(), {idn}, {signaal}, {node});"
+        cursor.execute(querie4)
+
+
+
 apparaat_insert()
+Signaal_insert()
