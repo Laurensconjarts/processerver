@@ -1,5 +1,7 @@
 import pymssql
 import requests
+import schedule
+
 devices = []
 macdata = []
 macadres = []
@@ -97,3 +99,7 @@ def Signaal_insert(signaal, node):
 
 
 api_con2()
+schedule.every(1).minutes.do(api_con2)
+
+while True:
+    schedule.run_pending()
