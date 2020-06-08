@@ -93,7 +93,7 @@ def apparaat_insert(mac, device):
         idn = result[0]
         print(idn)
 def Signaal_insert(signaal, node):
-        querie4 = f"INSERT INTO Signaal(Datum, ApparaatID, Signaalsterkte,Node) VALUES (GETDATE(),{idn}, {signaal}, '{node}');"
+        querie4 = f"INSERT INTO Signaal(Datum, ApparaatID, Signaalsterkte,Node) VALUES (FORMAT(GETDATE() , 'dd/MM/yyyy HH:mm'),{idn}, {signaal}, '{node}');"
         cursor.execute(querie4)
 
 
