@@ -10,12 +10,12 @@ sterkte = []
 
 def db_con():
     global conn
-    conn   = pymssql.connect(server='145.220.75.101', user='sa', password='P@ssw0rd', database='find3')
+    conn   = pymssql.connect(server='10.0.0.7', user='sa', password='P@ssw0rd', database='find3')
     global cursor
     cursor = conn.cursor()
 def api_con():
     global response
-    response = requests.get("http://145.220.75.101:8005")
+    response = requests.get("http://10.0.0.5:8005")
     print(response.status_code)
 
 
@@ -29,7 +29,7 @@ node = 0
 
 def api_con2():
     global response
-    response = requests.get("http://145.220.75.101:8005/api/v1/locations/sutoka")
+    response = requests.get("http://10.0.0.5:8005/api/v1/locations/sutoka")
     data = response.json()
     for each in data['locations']:
         devices.append(each['sensors']['d'])
