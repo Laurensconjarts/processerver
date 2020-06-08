@@ -1,5 +1,6 @@
 import pymssql
 import requests
+import schedule
 devices = []
 macdata = []
 macadres = []
@@ -11,14 +12,9 @@ def db_con():
     conn   = pymssql.connect(server='145.220.75.101', user='sa', password='P@ssw0rd', database='find3')
     global cursor
     cursor = conn.cursor()
-def api_con():
-    global response
-    response = requests.get("http://145.220.75.101:8005")
-    print(response.status_code)
 
 
 db_con()
-api_con()
 
 mac = 0
 device = 0
@@ -26,8 +22,13 @@ signaal = 0
 node = 0
 
 def api_con2():
+    devices.clear()
+    macdata.clear()
+    macadres.clear()
+    locatie.clear()
+    sterkte.clear()
     global response
-    response = requests.get("http://145.220.75.101:8005/api/v1/locations/sutoka")
+    response = requests.get("http://find3.sutoka.ga/api/v1/locations/sutoka")
     data = response.json()
     for each in data['locations']:
         devices.append(each['sensors']['d'])
@@ -91,9 +92,14 @@ def apparaat_insert(mac, device):
         idn = result[0]
         print(idn)
 def Signaal_insert(signaal, node):
-        querie4 = f"INSERT INTO Signaal(ApparaatID, Signaalsterkte,Node) VALUES ({idn}, {signaal}, '{node}');"
+        querie4 = f"INSERT INTO Signaal(Datum,ApparaatID, Signaalsterkte,Node) VALUES (GETDATE(),{idn}, {signaal}, '{node}');"
         cursor.execute(querie4)
 
 
 
 api_con2()
+
+schedule.every(1).minutes.do(api_con2)
+
+while True:
+    schedule.run_pending()
